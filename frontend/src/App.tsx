@@ -4,11 +4,13 @@ import CardList from "./Components/CardList/CardList";
 import Search from "./Components/Search/Search";
 import { CompanySearch } from "./interfaces";
 import { searchCompanies } from "./api";
+import ListPortfolio from "./Components/Portfolio/ListPortfolio/ListPortfolio";
 
 function App() {
   const [search, setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string>("");
+  const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -27,9 +29,17 @@ function App() {
     console.log(searchResult);
   };
 
-  const onPortfolioCreate = (e: SyntheticEvent) => {
+  const onPortfolioCreate = (e: any) => {
     e.preventDefault();
-    console.log(e);
+    const alreadyExists = portfolioValues.find((value) => {
+      return value === e.target[0].value;
+    });
+    if (alreadyExists) {
+      console.log("Item already in portfolio.");
+      return;
+    }
+    const updatedPortfolio = [...portfolioValues, e.target[0].value];
+    setPortfolioValues(updatedPortfolio);
   };
 
   return (
@@ -38,7 +48,11 @@ function App() {
         onSearchSubmit={onSearchSubmit}
         search={search}
         handleSearchChange={handleSearchChange}></Search>
+
       {serverError && <h1>{serverError}</h1>}
+
+      <ListPortfolio portfolioValues={portfolioValues} />
+
       <CardList
         searchResults={searchResult}
         onPortfolioCreate={onPortfolioCreate}
