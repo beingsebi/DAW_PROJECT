@@ -8,8 +8,7 @@ export const searchCompanies = async (query: string) => {
     const data = await axios.get<SearchResponse>(
       `https://financialmodelingprep.com/api/v3/search?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.REACT_APP_API_KEY}`
     );
-    console.log("EEEEE");
-    console.log(process.env.API_KEY);
+    // console.log("EEEEE", data);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
