@@ -2,6 +2,7 @@ import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import "./App.css";
 import CardList from "./Components/CardList/CardList";
 import Search from "./Components/Search/Search";
+import Navbar from "./Components/Navbar/Navbar";
 import { CompanySearch } from "./interfaces";
 import { searchCompanies } from "./api";
 import ListPortfolio from "./Components/Portfolio/ListPortfolio/ListPortfolio";
@@ -42,8 +43,17 @@ function App() {
     setPortfolioValues(updatedPortfolio);
   };
 
+  const onPortfolioDelete = (e: any) => {
+    e.preventDefault();
+    const updatedPortfolio = portfolioValues.filter((value) => {
+      return value !== e.target[0].value;
+    });
+    setPortfolioValues(updatedPortfolio);
+  };
+
   return (
     <div className="App">
+      <Navbar />
       <Search
         onSearchSubmit={onSearchSubmit}
         search={search}
@@ -51,7 +61,10 @@ function App() {
 
       {serverError && <h1>{serverError}</h1>}
 
-      <ListPortfolio portfolioValues={portfolioValues} />
+      <ListPortfolio
+        portfolioValues={portfolioValues}
+        onPortfolioDelete={onPortfolioDelete}
+      />
 
       <CardList
         searchResults={searchResult}
