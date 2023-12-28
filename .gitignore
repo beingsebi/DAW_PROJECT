@@ -1,2 +1,5 @@
 *.env
 frontend/node_modules/
+backend/bin/
+.fake
+backend/obj/Debug
