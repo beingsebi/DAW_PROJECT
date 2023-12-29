@@ -59,7 +59,7 @@ namespace backend.Controllers
             }
             var commentModel = commentDto.ToCommentFromCreate(stockId);
             await _commRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel}, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id}, commentModel.ToCommentDto());
         }
 
         [HttpDelete]
@@ -68,13 +68,25 @@ namespace backend.Controllers
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
-                
+
             var commentModel = await _commRepo.DeleteAsync(id);
             if(commentModel == null)
             {
                 return NotFound("Comment does not exist");
             }
             return Ok(commentModel);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update ([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
+        {
+            var comment = await _commRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate());
+            if (comment == null)
+            {
+                return NotFound("Comment not found");
+            }
+            return Ok(comment.ToCommentDto());
         }
     }
 }
