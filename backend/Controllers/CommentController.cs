@@ -26,5 +26,16 @@ namespace backend.Controllers
             var commentDtos = comments.Select(s => s.ToCommentDto());
             return Ok(commentDtos);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var comment = await _commRepo.GetByIdAsync(id);
+            if(comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment.ToCommentDto());
+        }
     }
 }
