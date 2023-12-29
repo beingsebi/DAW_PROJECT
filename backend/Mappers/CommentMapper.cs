@@ -17,8 +17,18 @@ namespace backend.Mappers
                 Id = commentModel.Id,
                 Title = commentModel.Title,
                 Content = commentModel.Content,
-                CreatedOn = commentModel.CreatedOn,
+                CreatedOn = (commentModel.CreatedOn.Kind == DateTimeKind.Utc) ? commentModel.CreatedOn : DateTime.SpecifyKind(commentModel.CreatedOn, DateTimeKind.Utc),
                 StockId = commentModel.StockId
+            };
+        }
+
+        public static Comment ToCommentFromCreate (this CreateCommentDto commentDto, int stockId)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockId = stockId
             };
         }
     }

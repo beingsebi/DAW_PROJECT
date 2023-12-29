@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace backend.Dtos.Comment
 {
-    public class CommentDto
+    public class CreateCommentDto
     {
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-        public int? StockId { get; set; }
     }
 }
