@@ -45,8 +45,10 @@ builder.Services.AddAuthentication(options=>{
         )
     };
 });
+
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+// builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
