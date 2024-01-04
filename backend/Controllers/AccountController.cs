@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Dtos.Account;
+using backend.Interfaces;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,11 @@ namespace backend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        public AccountController (UserManager<AppUser> UserManager)
+        private readonly ITokenService _tokenService;
+        public AccountController (UserManager<AppUser> UserManager, ITokenService tokenService)
         {
             _userManager = UserManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -37,7 +40,12 @@ namespace backend.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if(roleResult.Succeeded)
                     {
-                        return Ok("User created successfully");
+                        return Ok(new NewUserDto
+                        {
+                            UserName = appUser.UserName,
+                            Email = appUser.Email,
+                            Token = _tokenService.CreateToken(appUser)
+                        });
                     }
                     else
                     {
