@@ -91,7 +91,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(x => x.WithOrigins(new[]{"http://localhost:3000/", "http://localhost:8080/"}).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(x => x.WithOrigins("http://localhost:3000", "http://localhost:5000").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -1,5 +1,7 @@
 import Cookies from "universal-cookie";
 
+export const API_URL = "http://localhost:5000";
+
 export const formatLargeMonetaryNumber: any = (number: number) => {
   if (number < 0) {
     return "-" + formatLargeMonetaryNumber(-1 * number);
@@ -49,5 +51,6 @@ export const getJWTCookie = () => {
 };
 
 export const decodeToken = (jwtToken: string) => {
+  // console.log(jwtToken);
   return JSON.parse(atob(jwtToken.split(".")[1]));
 };

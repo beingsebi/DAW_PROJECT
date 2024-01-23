@@ -26,6 +26,9 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
+            // Console.WriteLine("username: " + loginDto.Username);
+            // Console.WriteLine("pwd: "+ loginDto.Password);
+
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -48,8 +51,11 @@ namespace backend.Controllers
             Response.Cookies.Append("jwtToken", token, new CookieOptions
             {
                 HttpOnly = false,
-                Secure = true
+                Secure = false,
+                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
             });
+            Console.WriteLine("added cookie");
+            
             return Ok(
                 new NewUserDto
                 {
