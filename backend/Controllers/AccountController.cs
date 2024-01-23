@@ -47,9 +47,8 @@ namespace backend.Controllers
 
             Response.Cookies.Append("jwtToken", token, new CookieOptions
             {
-                HttpOnly = true
-                // SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
-                // Secure = true
+                HttpOnly = false,
+                Secure = true
             });
             return Ok(
                 new NewUserDto

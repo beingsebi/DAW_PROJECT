@@ -1,3 +1,5 @@
+import Cookies from "universal-cookie";
+
 export const formatLargeMonetaryNumber: any = (number: number) => {
   if (number < 0) {
     return "-" + formatLargeMonetaryNumber(-1 * number);
@@ -34,4 +36,15 @@ export const formatLargeNonMonetaryNumber: any = (number: number) => {
 
 export const formatRatio = (ratio: number) => {
   return (Math.round(ratio * 100) / 100).toFixed(2);
+};
+
+export const getJWTCookie = () => {
+  const cookies = new Cookies();
+  const jwtToken = cookies.get("jwtToken");
+  console.log("jwtToken: ", jwtToken);
+
+  if (jwtToken === undefined) {
+    return null;
+  }
+  return jwtToken;
 };
