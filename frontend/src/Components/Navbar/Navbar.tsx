@@ -43,22 +43,50 @@ function NotLoggedIn() {
   );
 }
 
-function LoggedIn(jwtToken: string) {
+function LoggedIn(jwtToken: string, context: any | null) {
   const decodedToken = decodeToken(jwtToken);
+
+  const handleLogout = (e: any) => {
+    e.preventDefault();
+    console.log("logout");
+    document.cookie =
+      "jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  };
 
   return (
     <>
-      <div className="flex flex-wrap space-x-10">
-        <div>{decodedToken.given_name}</div>
-        <a>Logout</a>
+      <div className="flex items-center space-x-6 text-black lg:hidden">
+        {/* Show these elements on screens smaller than lg */}
+        <div className="text-black">{decodedToken.given_name}</div>
+        <a
+          href=""
+          onClick={handleLogout}
+          className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70">
+          Logout
+        </a>
+      </div>
+      <div className="hidden lg:flex items-center space-x-6 text-back">
+        {/* Hide these elements on screens smaller than lg */}
+        <div className="text-black">{decodedToken.given_name}</div>
+        <a
+          href=""
+          onClick={(e) => {
+            e.preventDefault();
+            handleLogout(e);
+            context.setCurrentUser(null);
+          }}
+          className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70">
+          Logout
+        </a>
       </div>
     </>
   );
 }
 
 const Navbar = (props: Props) => {
-  const jwtToken = useContext(CurrentUserContext)?.currentUser;
-  const toRender = jwtToken ? LoggedIn(jwtToken) : NotLoggedIn();
+  const context = useContext(CurrentUserContext);
+  const jwtToken = context?.currentUser;
+  const toRender = jwtToken ? LoggedIn(jwtToken, context) : NotLoggedIn();
   return (
     <nav className="relative container mx-auto p-6">
       <div className="flex items-center justify-between">
