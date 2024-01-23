@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace backend.Models
 {
+    [Table("Stocks")]
     public class Stock
     {
         public int Id { get; set; }
@@ -24,5 +25,7 @@ namespace backend.Models
         public long MarketCap { get; set; }
 
         public List<Comment> Comments { get; set; }= new List<Comment>();
+        public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+
     }
 }
