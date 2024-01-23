@@ -41,10 +41,13 @@ export const formatRatio = (ratio: number) => {
 export const getJWTCookie = () => {
   const cookies = new Cookies();
   const jwtToken = cookies.get("jwtToken");
-  console.log("jwtToken: ", jwtToken);
 
   if (jwtToken === undefined) {
     return null;
   }
   return jwtToken;
+};
+
+export const decodeToken = (jwtToken: string) => {
+  return JSON.parse(atob(jwtToken.split(".")[1]));
 };
