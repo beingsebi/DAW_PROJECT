@@ -1,11 +1,9 @@
-import React, { SyntheticEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { API_URL } from "../../helpers";
 import { CurrentUserContext } from "../../App";
 
-interface Props {}
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   const [vusername, setUsername] = useState("");
   const [vpassword, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -34,18 +32,15 @@ const LoginPage = (props: Props) => {
       const data = await response.json();
       console.log("Login successful");
       context?.setCurrentUser(data.token);
-      // context?.setCurrentUser();
+      setRedirect(true);
     } catch (error) {
       console.error("Error:", error);
     }
-
-    setRedirect(true);
   };
 
   if (redirect) {
     return <Navigate to="/" />;
   }
-  // ...
 
   return (
     <>
@@ -98,75 +93,3 @@ const LoginPage = (props: Props) => {
 };
 
 export default LoginPage;
-
-// import React, { useState } from "react";
-// import { API_URL } from "../../helpers";
-
-// interface LoginResponse {
-//   userName: string;
-//   email: string;
-//   token: string;
-// }
-
-// interface LoginDto {
-//   Username: string;
-//   Password: string;
-// }
-
-// const LoginPage: React.FC = () => {
-//   const [username, setUsername] = useState<string>("");
-//   const [password, setPassword] = useState<string>("");
-
-//   const handleLogin = async () => {
-//     try {
-//       const response = await fetch(API_URL + "/login", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           Username: username,
-//           Password: password,
-//         } as LoginDto),
-//       });
-
-//       if (!response.ok) {
-//         // Handle error
-//         console.error("Login failed");
-//         return;
-//       }
-
-//       const data: LoginResponse = await response.json();
-//       // Do something with the response data, e.g., store it in the state or local storage
-//       console.log("Login successful", data);
-//     } catch (error) {
-//       console.error("Error during login:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <label>
-//         Username:
-//         <input
-//           type="text"
-//           value={username}
-//           onChange={(e) => setUsername(e.target.value)}
-//         />
-//       </label>
-//       <br />
-//       <label>
-//         Password:
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//       </label>
-//       <br />
-//       <button onClick={handleLogin}>Login</button>
-//     </div>
-//   );
-// };
-
-// export default LoginPage;
