@@ -85,6 +85,7 @@ function LoggedIn(jwtToken: string, context: any | null) {
 }
 
 const Navbar = (props: Props) => {
+  document.title = "FinData";
   const context = useContext(CurrentUserContext);
   const jwtToken = context?.currentUser;
   const toRender = jwtToken ? LoggedIn(jwtToken, context) : NotLoggedIn();

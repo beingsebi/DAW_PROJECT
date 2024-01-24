@@ -9,7 +9,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  const context = useContext(CurrentUserContext);
+  // const context = useContext(CurrentUserContext);
 
   const handleClick = async () => {
     try {

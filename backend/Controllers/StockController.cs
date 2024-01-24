@@ -58,12 +58,19 @@ namespace backend.Controllers
         [Authorize]
         public async Task<ActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-                
+
+            // Check if there is another stock with the same symbol
+            var existingStock = await _stockRepo.GetBySymbolAndExchangeAsync(stockDto.Symbol, stockDto.ExchangeName);
+            if (existingStock != null)
+            {
+                return BadRequest("Stock with the same symbol and exchange already exists");
+            }
+
             var stockModel = stockDto.ToStockFromCreateDto();
             await _stockRepo.CreateAsync(stockModel);
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id}, stockModel.ToStockDto( ));
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
 
         [HttpPut]
