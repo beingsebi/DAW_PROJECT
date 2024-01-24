@@ -52,7 +52,7 @@ namespace backend.Controllers
             {
                 HttpOnly = false,
                 Secure = false,
-                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
+                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None,
             });
             Console.WriteLine("added cookie");
             

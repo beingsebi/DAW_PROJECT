@@ -49,6 +49,7 @@ function LoggedIn(jwtToken: string, context: any | null) {
   const handleLogout = (e: any) => {
     e.preventDefault();
     console.log("logout");
+    context.setCurrentUser(null);
     document.cookie =
       "jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };

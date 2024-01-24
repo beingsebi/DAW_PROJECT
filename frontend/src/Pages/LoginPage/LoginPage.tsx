@@ -12,11 +12,6 @@ const LoginPage = (props: Props) => {
 
   const context = useContext(CurrentUserContext);
 
-  // interface LoginDto {
-  //   Username: string;
-  //   Password: string;
-  // }
-
   const handleClick = async (v_username: string, v_password: string) => {
     try {
       // console.log(v_username, v_password);
@@ -56,8 +51,6 @@ const LoginPage = (props: Props) => {
     <>
       <br />
       <br />
-      <h1 style={{ marginLeft: "20%" }}>Please sign in</h1>
-
       <div
         style={{
           display: "flex",
