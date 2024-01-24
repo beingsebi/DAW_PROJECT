@@ -44,16 +44,25 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
+
 builder.Services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;});
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
 {
     options.Password.RequireDigit = true;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
-}).AddEntityFrameworkStores<ApplicationDBContext>();
+}).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
+
+
+// builder.Services.AddIdentity<AppUser, IdentityRole>()
+//         .AddRoleManager<RoleManager<IdentityRole>>()
+//         .AddDefaultTokenProviders()
+//         .AddEntityFrameworkStores<ApplicationDBContext>();
 
 builder.Services.AddAuthentication(options=>{
     options.DefaultAuthenticateScheme =
@@ -62,6 +71,7 @@ builder.Services.AddAuthentication(options=>{
     options.DefaultScheme =
     options.DefaultSignInScheme =
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 }).AddJwtBearer(options =>{
     options.TokenValidationParameters = new TokenValidationParameters
     {

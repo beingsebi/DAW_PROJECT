@@ -61,8 +61,7 @@ namespace backend.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Symbol = table.Column<string>(type: "text", nullable: false),
                     CompanyName = table.Column<string>(type: "text", nullable: false),
-                    Purchase = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    LastDiv = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    ExchangeName = table.Column<string>(type: "text", nullable: false),
                     Industry = table.Column<string>(type: "text", nullable: false),
                     MarketCap = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -227,8 +226,8 @@ namespace backend.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "06543ab7-b011-41d6-9052-3a59b9bd7b6e", null, "Admin", "ADMIN" },
-                    { "38550b48-09d2-47af-80fb-4187c4e8a9ca", null, "User", "USER" }
+                    { "69f1bd06-3c45-445e-809b-a519244eb928", null, "User", "USER" },
+                    { "f0c1bc65-9bd3-4e39-ba20-7fd7cba2b7cb", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

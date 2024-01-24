@@ -50,13 +50,13 @@ namespace backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "06543ab7-b011-41d6-9052-3a59b9bd7b6e",
+                            Id = "f0c1bc65-9bd3-4e39-ba20-7fd7cba2b7cb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "38550b48-09d2-47af-80fb-4187c4e8a9ca",
+                            Id = "69f1bd06-3c45-445e-809b-a519244eb928",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -288,18 +288,16 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ExchangeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Industry")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("LastDiv")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<long>("MarketCap")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("Purchase")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Symbol")
                         .IsRequired()

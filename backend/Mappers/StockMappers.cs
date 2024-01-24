@@ -16,8 +16,7 @@ namespace backend.Mappers
                 Id = stockModel.Id,
                 Symbol = stockModel.Symbol,
                 CompanyName = stockModel.CompanyName,
-                Purchase = stockModel.Purchase,
-                LastDiv = stockModel.LastDiv,
+                ExchangeName = stockModel.ExchangeName,
                 Industry = stockModel.Industry,
                 MarketCap = stockModel.MarketCap,
                 Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
@@ -30,8 +29,7 @@ namespace backend.Mappers
             {
                 Symbol = stockDto.Symbol,
                 CompanyName = stockDto.CompanyName,
-                Purchase = stockDto.Purchase,
-                LastDiv = stockDto.LastDiv,
+                ExchangeName = stockDto.ExchangeName,
                 Industry = stockDto.Industry,
                 MarketCap = stockDto.MarketCap
             };

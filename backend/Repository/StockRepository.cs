@@ -89,8 +89,7 @@ namespace backend.Repository
             }
             existingStock.Symbol = stockDto.Symbol;
             existingStock.CompanyName = stockDto.CompanyName;
-            existingStock.Purchase = stockDto.Purchase;
-            existingStock.LastDiv = stockDto.LastDiv;
+            existingStock.ExchangeName = stockDto.ExchangeName;
             existingStock.Industry = stockDto.Industry;
             existingStock.MarketCap = stockDto.MarketCap;
 

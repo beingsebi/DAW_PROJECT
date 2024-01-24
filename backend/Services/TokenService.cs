@@ -24,10 +24,12 @@ namespace backend.Services
         }
         public string CreateToken(AppUser appUser)
         {
+            var roleClaim =(appUser.UserName == "admin") ? new Claim(ClaimTypes.Role, "Admin") : new Claim(ClaimTypes.Role, "User");
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.GivenName, appUser.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, appUser.Email)
+                new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
+                roleClaim
             };  
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptor = new SecurityTokenDescriptor

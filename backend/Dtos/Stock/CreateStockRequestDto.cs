@@ -16,10 +16,10 @@ namespace backend.Dtos.Stock
         [MaxLength(50, ErrorMessage ="Company name must have at most 50 characters")]
         public string CompanyName { get; set; } = string.Empty;
 
+
         [Required]
-        public decimal Purchase { get; set; }
-        [Required]
-        public decimal LastDiv { get; set; }
+        [MaxLength(150, ErrorMessage ="Exchange name must have at most 150 characters")]
+        public string ExchangeName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50, ErrorMessage ="Industry name must have at most 50 characters")]

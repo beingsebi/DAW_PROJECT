@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using backend.Dtos.Account;
 using backend.Interfaces;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,15 @@ namespace backend.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             // Console.WriteLine("username: " + loginDto.Username);
             // Console.WriteLine("pwd: "+ loginDto.Password);
-
+            if (User.IsInRole("User") || User.IsInRole("Admin"))
+            {
+                return Unauthorized("You are already logged in");
+            }
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -68,8 +73,13 @@ namespace backend.Controllers
 
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
+            if (User.IsInRole("User") || User.IsInRole("Admin"))
+            {
+                return Unauthorized("You are already logged in");
+            }
             try
             {
                 if(!ModelState.IsValid)

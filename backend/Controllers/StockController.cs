@@ -27,7 +27,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if(!ModelState.IsValid)
@@ -55,6 +55,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
             if(!ModelState.IsValid)
@@ -66,6 +67,7 @@ namespace backend.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
         {
@@ -81,6 +83,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id)
         {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using backend.Dtos.Comment;
 using backend.Interfaces;
 using backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -23,6 +24,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             if(!ModelState.IsValid)
@@ -34,6 +36,8 @@ namespace backend.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if(!ModelState.IsValid)
@@ -48,6 +52,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("{stockId:int}")]
+        [Authorize]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto)
         {
             if(!ModelState.IsValid)
@@ -64,6 +69,7 @@ namespace backend.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if(!ModelState.IsValid)
@@ -79,6 +85,7 @@ namespace backend.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update ([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
         {
             var comment = await _commRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate());
