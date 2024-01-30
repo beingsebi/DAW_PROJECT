@@ -47,10 +47,11 @@ const SearchPage = (props: Props) => {
           },
           body: JSON.stringify(data),
         });
-
+        // console.log(response);
         if (response.ok) {
           console.log("Data inserted successfully");
-          return true;
+          const aux = await response.json();
+          return aux.id;
         } else {
           console.log(
             "Failed to insert data. Might already exist." + response.statusText
@@ -59,7 +60,7 @@ const SearchPage = (props: Props) => {
       } catch (error) {
         console.error("An error occurred while inserting data:", error);
       }
-      return false;
+      return -1;
     };
 
     const response = await getCompanyProfile(e.target[0].value);
@@ -68,7 +69,6 @@ const SearchPage = (props: Props) => {
       console.error("Failed to get company profile");
       return;
     }
-    console.log("here");
     const data = {
       symbol: company.symbol,
       companyName: company.companyName,
@@ -77,10 +77,9 @@ const SearchPage = (props: Props) => {
       marketCap: company.mktCap.toString(),
     };
 
-    //TODO
-    // ALSO ADD IT TO PORTFOLIO HERE
     const response_insert = await insertData(data);
-    if (response_insert == true) {
+    // console.log(response_insert.);
+    if (response_insert != -1) {
       const updatedPortfolio = [...portfolioValues, e.target[0].value];
       setPortfolioValues(updatedPortfolio);
     }

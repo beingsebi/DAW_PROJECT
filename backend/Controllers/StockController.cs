@@ -65,7 +65,8 @@ namespace backend.Controllers
             var existingStock = await _stockRepo.GetBySymbolAndExchangeAsync(stockDto.Symbol, stockDto.ExchangeName);
             if (existingStock != null)
             {
-                return BadRequest("Stock with the same symbol and exchange already exists");
+                // return Conflict("aa");
+                return CreatedAtAction(nameof(GetById), new { id = existingStock.Id }, existingStock.ToStockDto());           
             }
 
             var stockModel = stockDto.ToStockFromCreateDto();
