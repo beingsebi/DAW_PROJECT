@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from "react";
+import React, { ChangeEvent, SyntheticEvent, useState, useEffect } from "react";
 import { CompanySearch } from "../../interfaces";
 import { getCompanyProfile, searchCompanies } from "../../api";
 import Search from "../../Components/Search/Search";
@@ -13,6 +13,41 @@ const SearchPage = (props: Props) => {
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string>("");
   const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
+
+  const fetchPortfolioData = async () => {
+    try {
+      const response = await fetch(API_URL + "/api/portfolio", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          authorization: "Bearer " + getJWTCookie(),
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        console.log("Failed to fetch portfolio data: " + response.statusText);
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching portfolio data:", error);
+    }
+    return -1;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      return await fetchPortfolioData();
+    };
+
+    const tt = fetchData()
+      .then((data) => data.map((a: any) => a.symbol))
+      .then((a) => setPortfolioValues(a));
+
+    console.log(tt);
+  }, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -114,6 +149,7 @@ const SearchPage = (props: Props) => {
         stockId: response_insert,
       };
       const response_portfolio = await insertPortfolio(ddata);
+      return response_portfolio;
     }
   };
 
