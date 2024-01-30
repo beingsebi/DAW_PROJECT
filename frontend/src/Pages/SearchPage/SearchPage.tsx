@@ -63,6 +63,33 @@ const SearchPage = (props: Props) => {
       return -1;
     };
 
+    const insertPortfolio = async (data: any) => {
+      try {
+        const response = await fetch(API_URL + "/api/portfolio", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            authorization: "Bearer " + getJWTCookie(),
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          console.log("Portfolio Data inserted successfully");
+          return true;
+        } else {
+          console.log("Portfolio Failed to insert data " + response.statusText);
+        }
+      } catch (error) {
+        console.error(
+          "Portfolio An error occurred while inserting data:",
+          error
+        );
+      }
+      return false;
+    };
+
     const response = await getCompanyProfile(e.target[0].value);
     const company = response?.data[0];
     if (!company) {
@@ -78,10 +105,15 @@ const SearchPage = (props: Props) => {
     };
 
     const response_insert = await insertData(data);
+    console.log(response_insert);
     // console.log(response_insert.);
     if (response_insert != -1) {
       const updatedPortfolio = [...portfolioValues, e.target[0].value];
       setPortfolioValues(updatedPortfolio);
+      const ddata = {
+        stockId: response_insert,
+      };
+      const response_portfolio = await insertPortfolio(ddata);
     }
   };
 

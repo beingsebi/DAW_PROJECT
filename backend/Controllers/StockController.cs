@@ -68,7 +68,6 @@ namespace backend.Controllers
                 // return Conflict("aa");
                 return CreatedAtAction(nameof(GetById), new { id = existingStock.Id }, existingStock.ToStockDto());           
             }
-
             var stockModel = stockDto.ToStockFromCreateDto();
             await _stockRepo.CreateAsync(stockModel);
             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());

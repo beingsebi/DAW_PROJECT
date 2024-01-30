@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using backend.Dtos.Account;
 using System.IdentityModel.Tokens.Jwt;
+using backend.Dtos.Portfolio;
 
 
 namespace backend.Controllers
@@ -51,16 +52,18 @@ namespace backend.Controllers
            return Ok(stocks);
         }
 
-        [HttpPost("{stockId:int}")]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> InsertStockToPortfolio([FromRoute] int stockId)
+        public async Task<IActionResult> InsertStockToPortfolio( PortfolioDto portfolioDto)
         {
+            var stockId = int.Parse(portfolioDto.StockId);
+            Console.WriteLine("-----  \nstockId: " + stockId);
             var handler = new JwtSecurityTokenHandler();
             
             var jwtSecurityToken = handler.ReadJwtToken(Request.Cookies["jwtToken"]);
             var jwtname = jwtSecurityToken.Payload["given_name"];
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == jwtname.ToString());
-
+            Console.WriteLine(user);
             if(user == null)
             {
                 return Unauthorized("You are not authorized to view this portfolio");
@@ -79,7 +82,7 @@ namespace backend.Controllers
             };
 
             await _portfolioRepo.CreateAsync(portfolio);
-                        
+
             return Ok();
         }
     }
