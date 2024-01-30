@@ -70,6 +70,14 @@ const SearchPage = (props: Props) => {
     e.preventDefault();
     console.log(e);
 
+    const alreadyExists = portfolioValues.find((value) => {
+      return value === e.target[0].value;
+    });
+    if (alreadyExists) {
+      console.log("Item already in portfolio.");
+      return;
+    }
+
     const insertData = async (data: any) => {
       try {
         const response = await fetch(API_URL + "/api/stock", {
