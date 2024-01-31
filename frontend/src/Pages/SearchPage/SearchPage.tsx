@@ -1,10 +1,17 @@
-import React, { ChangeEvent, SyntheticEvent, useState, useEffect } from "react";
+import React, {
+  ChangeEvent,
+  SyntheticEvent,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import { CompanySearch } from "../../interfaces";
 import { getCompanyProfile, searchCompanies } from "../../api";
 import Search from "../../Components/Search/Search";
 import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfolio";
 import CardList from "../../Components/CardList/CardList";
 import { API_URL, getJWTCookie } from "../../helpers";
+import { CurrentUserContext } from "../../App";
 
 interface Props {}
 
@@ -13,6 +20,7 @@ const SearchPage = (props: Props) => {
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string>("");
   const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
+  const context = useContext(CurrentUserContext);
 
   const fetchPortfolioData = async () => {
     try {
@@ -38,15 +46,17 @@ const SearchPage = (props: Props) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      return await fetchPortfolioData();
-    };
+    if (context?.currentUser != null) {
+      const fetchData = async () => {
+        return await fetchPortfolioData();
+      };
 
-    const tt = fetchData()
-      .then((data) => data.map((a: any) => a.symbol))
-      .then((a) => setPortfolioValues(a));
+      const tt = fetchData()
+        .then((data) => data.map((a: any) => a.symbol))
+        .then((a) => setPortfolioValues(a));
 
-    console.log(tt);
+      console.log(tt);
+    }
   }, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +109,7 @@ const SearchPage = (props: Props) => {
           console.log(
             "Failed to insert data. Might already exist." + response.statusText
           );
+          alert(response.statusText);
         }
       } catch (error) {
         console.error("An error occurred while inserting data:", error);
