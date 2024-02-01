@@ -172,12 +172,43 @@ const SearchPage = (props: Props) => {
     }
   };
 
-  const onPortfolioDelete = (e: any) => {
+  const onPortfolioDelete = async (e: any) => {
+    const deletePortfoliob = async (data: any) => {
+      try {
+        const response = await fetch(API_URL + "/api/portfolio", {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            authorization: "Bearer " + getJWTCookie(),
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          console.log("Portfolio Data deleted successfully");
+          return true;
+        } else {
+          console.log("Portfolio Failed to delete data " + response.statusText);
+        }
+      } catch (error) {
+        console.error(
+          "Portfolio An error occurred while inserting data:",
+          error
+        );
+      }
+      return false;
+    };
+
     e.preventDefault();
     const updatedPortfolio = portfolioValues.filter((value) => {
       return value !== e.target[0].value;
     });
-    setPortfolioValues(updatedPortfolio);
+
+    const ddata = { stockSymbol: e.target[0].value };
+    const respdelete = await deletePortfoliob(ddata);
+    if (respdelete) setPortfolioValues(updatedPortfolio);
+    else alert("Failed to delete portfolio item");
   };
 
   return (
