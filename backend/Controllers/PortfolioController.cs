@@ -85,6 +85,40 @@ namespace backend.Controllers
 
             return Ok();
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteStockToPortfolio( PortfolioDeleteDto portfolioDto)
+        {
+            var stockSymbol = portfolioDto.StockSymbol;
+
+            var handler = new JwtSecurityTokenHandler();
+            
+            var jwtSecurityToken = handler.ReadJwtToken(Request.Cookies["jwtToken"]);
+            var jwtname = jwtSecurityToken.Payload["given_name"];
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == jwtname.ToString());
+            Console.WriteLine(user);
+            if(user == null)
+            {
+                return Unauthorized("You are not authorized to view this portfolio");
+            }
+
+            var stock = await _stockRepo.GetBySymbolAsync(stockSymbol);
+            if(stock == null)
+            {
+                return NotFound("Stock not found");
+            }
+
+            var portfolio = new Portfolio
+            {
+                AppUserId = user.Id,
+                StockId = stock.Id
+            };
+
+            await _portfolioRepo.DeleteAsync(portfolio);
+
+            return Ok();
+        }
     }
 
 
